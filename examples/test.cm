@@ -1,0 +1,5 @@
+output path is cm/path
+output cm/linebreak
+get https://google.com
+output cm/linebreak
+output thanks for using control manual

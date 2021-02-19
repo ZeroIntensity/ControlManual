@@ -1,7 +1,7 @@
 import requests # Import the requests library
 import traceback # For error handling
 from .static import *
-
+import json
 class Functions: # Define the class
     def __init__(self):
         self.s = Static()
@@ -21,7 +21,22 @@ class Functions: # Define the class
 JSON: {json}''' # Return the status and JSON
     def output(self, text):
         return text
-    
+
+
+    def declare(self, args): # Variable declaration
+        count = args.count('=') # Check how many times an equals sign appears
+        if not count == 1: # If its more than 1
+            return self.s.error('Invalid Syntax') # Return a syntax error
+        if ' = ' in args: # If its '=' or ' = '
+            args = args.split(' = ')
+        else:
+            args = args.split('=')
+        with open('ControlManual/session_vars.json', 'r') as f: # Open the vars json
+            session = json.load(f) # Load the json
+        session['var/' + args[0]] = args[1] # Set the key
+        with open('ControlManual/session_vars.json', 'w') as f:
+            json.dump(session, f) # Dump the data
+        return ''
 
 
     def compile(self, client, file):

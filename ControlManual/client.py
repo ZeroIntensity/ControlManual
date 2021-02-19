@@ -4,6 +4,9 @@ from .static import Static # Import static
 class Client: # Define the client
     def __init__(self): 
         self.path = 'C:/' # Set the default path to 'C:/'
+        f = open('ControlManual/session_vars.json', 'w+') # Create the session variables json
+        f.write('{}')
+        f.close()
     def getpath(self):
         return self.path
 
@@ -14,14 +17,14 @@ class Client: # Define the client
     def instance(self, comm): # The actual control manual instance
         f = Functions() # Initalize functions
         s = Static() # Initalize static
-
         comm = s.addvars(self, comm)
 
         comm = comm.split(' ') # Split the command at spaces
         comm.append(' ') # Create a blank one so we don't get index errors
         if comm[0] == '':
             return ''
-
+        if comm[0] == 'declare':
+            return f.declare(s.slicecmd(comm))
         if comm[0] == 'compile': # If the command is 'compile'
             slic = s.slicecmd(comm)
             return f.compile(Client, slic + '.cm')

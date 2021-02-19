@@ -1,5 +1,5 @@
 import requests # Import the requests library
-
+import json
 class Static: # Define the static class
     def slicecmd(self, comm): # Create the slicecmd function
         cmd = ''
@@ -25,4 +25,10 @@ class Static: # Define the static class
     def addvars(self, client, comm): # Function that replaces strings of text with variables
         comm = comm.replace('cm/path', client.path) # Add path
         comm = comm.replace('cm/linebreak', '\n')
+        with open('ControlManual/session_vars.json') as f:
+            session = json.load(f)
+        sess = list(session.keys())
+        for i in sess:
+            comm = comm.replace(str(i), str(session[i]))
+        
         return comm # Return the modified comm
